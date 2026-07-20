@@ -5,6 +5,9 @@ dist/
 out/
 *.tmp
 
+# Never commit registry credentials
+.npmrc
+
 # Internal/process docs
 PUBLISH-PROMPT.md
 SHIP.md

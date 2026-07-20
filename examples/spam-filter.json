@@ -1,0 +1,5 @@
+{
+  "name": "Email Spam Filter",
+  "description": "Classifies inbound email as spam or not spam.",
+  "role": "provider"
+}

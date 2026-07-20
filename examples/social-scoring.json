@@ -1,0 +1,6 @@
+{
+  "name": "Citizen Trust Score",
+  "description": "Scores citizens over time from behaviour to gate access to services.",
+  "role": "provider",
+  "prohibited": { "socialScoring": true }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "OpenWeights-7B",
+  "description": "A general-purpose language model we train and release.",
+  "role": "provider",
+  "gpai": true
+}

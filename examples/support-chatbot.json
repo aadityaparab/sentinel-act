@@ -1,0 +1,6 @@
+{
+  "name": "Support Chatbot",
+  "description": "Customer-support assistant embedded on our website.",
+  "role": "both",
+  "transparency": { "directInteraction": true }
+}

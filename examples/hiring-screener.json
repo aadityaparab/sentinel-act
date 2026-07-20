@@ -1,0 +1,7 @@
+{
+  "name": "AI Hiring Screener",
+  "description": "Ranks and filters job applicants from their CVs before human review.",
+  "role": "provider",
+  "annexIII": { "employment": true },
+  "involvesProfiling": true
+}

@@ -1,0 +1,51 @@
+{
+  "name": "sentinel-act",
+  "version": "0.1.0",
+  "description": "EU AI Act readiness toolkit — classify an AI system's risk tier, get the obligations that apply, and generate a conformity checklist + starter documentation. CLI + library. Informational, not legal advice.",
+  "type": "module",
+  "bin": {
+    "act": "dist/cli.js"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "act": "node dist/cli.js"
+  },
+  "keywords": [
+    "eu-ai-act",
+    "ai-act",
+    "ai-governance",
+    "compliance",
+    "risk-assessment",
+    "grc",
+    "annex-iii",
+    "conformity",
+    "responsible-ai",
+    "sentinel-stack"
+  ],
+  "author": "Aaditya Parab",
+  "license": "MIT",
+  "homepage": "https://github.com/aadityaparab/sentinel-act",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aadityaparab/sentinel-act.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "typescript": "^5.4.5"
+  }
+}

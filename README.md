@@ -108,7 +108,7 @@ Built from Regulation (EU) 2024/1689 and its Annexes. Primary references: the [E
 
 ## Roadmap
 
-- [ ] Hosted web classifier (GitHub Pages) for non-technical users
+- [x] Hosted web classifier (GitHub Pages) for non-technical users — see `web/index.html`, deployed from `docs/`
 - [ ] Deeper Annex III sub-category questions & Art 6(3) guidance
 - [ ] ISO/IEC 42001 & NIST AI RMF control cross-mapping
 - [ ] PDF export of the readiness report

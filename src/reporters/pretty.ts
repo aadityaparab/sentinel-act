@@ -53,8 +53,15 @@ export function pretty(a: Assessment, color = true): string {
   }
 
   out.push("");
+  // The globally next milestone is not necessarily *this* system's deadline, so
+  // label it plainly and call out the high-risk dates separately when they apply.
   const next = a.timeline.find((t) => t.status === "upcoming");
-  if (next) out.push(p(`key date:  ${next.date} — ${next.milestone}`, C.dim));
+  if (next) out.push(p(`next milestone:  ${next.date} — ${next.milestone}`, C.dim));
+  if (a.tier === "high") {
+    for (const hr of a.timeline.filter((t) => t.status === "upcoming" && t.track === "high")) {
+      out.push(p(`your high-risk deadline:  ${hr.date} — ${hr.milestone}`, C.dim));
+    }
+  }
   const pen = a.tier === "unacceptable" ? PENALTIES[0] : a.tier === "minimal" ? null : PENALTIES[1];
   if (pen) out.push(p(`max penalty:  ${pen.max} (${pen.article})`, C.dim));
 

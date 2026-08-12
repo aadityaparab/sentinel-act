@@ -144,7 +144,7 @@
   </div>
 
   <p class="foot">Sentinel Act by <a href="https://github.com/aadityaparab" rel="noopener">Aaditya Parab</a> · part of Sentinel Stack · MIT.
-  Based on Regulation (EU) 2024/1689. Timelines can change — verify before relying on this.</p>
+  Based on Regulation (EU) 2024/1689 as amended by the Digital Omnibus on AI (in force 27 Jul 2026); legal content verified 2026-08-12. Timelines can change — verify before relying on this.</p>
 </div>
 
 <script>
@@ -163,6 +163,9 @@ const PROHIBITED = [
   {key:"emotionRecognitionWorkEducation", title:"Emotion recognition in the workplace or education", article:"Art 5(1)(f)"},
   {key:"biometricCategorizationSensitive", title:"Biometric categorisation of sensitive attributes", article:"Art 5(1)(g)"},
   {key:"realtimeRemoteBiometricIdPublic", title:"Real-time remote biometric ID in public (law enforcement)", article:"Art 5(1)(h)"},
+  // Added by the Digital Omnibus. Sub-paragraph letter omitted: the numbering in
+  // the published text is not yet settled. Applies from 2 Dec 2026.
+  {key:"nonConsensualIntimateImagery", title:"AI-generated non-consensual intimate imagery or CSAM", article:"Art 5 (as amended by the Digital Omnibus)", appliesFrom:"2026-12-02"},
 ];
 const ANNEX_III = [
   {key:"biometrics", title:"Biometrics", annex:"Annex III(1)"},
@@ -225,17 +228,28 @@ const OBL = {
   limited:[["LR-50","Transparency disclosures","Art 50","Meet the applicable Article 50 transparency duties."]],
   minimal:[["MR-95","Voluntary codes of conduct","Art 95","No mandatory obligations; voluntary codes encouraged."]],
 };
-const TIMELINE = [
-  ["2024-08-01","AI Act enters into force","in force"],
-  ["2025-02-02","Prohibited practices (Art 5) & AI literacy apply","in force"],
-  ["2025-08-02","GPAI obligations, governance & penalties apply","in force"],
-  ["2026-08-02","High-risk (Annex III) & most provisions apply","upcoming"],
-  ["2027-12-02","Proposed deferral of Annex III deadline (Digital Omnibus, provisional)","proposed change"],
-  ["2027-08-02","High-risk safety components of products (Annex I) apply","upcoming"],
+// Dates under Reg. (EU) 2024/1689 as amended by the Digital Omnibus on AI
+// (in force 27 Jul 2026), which deferred both high-risk regimes and left the
+// Article 50 transparency duties on their original schedule.
+const TIMELINE_FACTS = [
+  ["2024-08-01","AI Act enters into force"],
+  ["2025-02-02","Prohibited practices (Art 5) & AI literacy apply"],
+  ["2025-08-02","GPAI obligations, governance & penalties apply"],
+  ["2026-07-27","Digital Omnibus on AI enters into force, amending the Act"],
+  ["2026-08-02","Art 50 transparency duties & remaining general provisions apply"],
+  ["2026-12-02","Art 50(2) marking deadline for pre-existing generative AI; new Art 5 prohibition applies"],
+  ["2027-12-02","High-risk (Annex III) obligations apply"],
+  ["2028-08-02","High-risk safety components of products (Annex I) apply"],
 ];
+// Status is derived from today's date, so a milestone cannot keep reporting as
+// "upcoming" once it has passed.
+const TODAY = new Date().toISOString().slice(0,10);
+const TIMELINE = TIMELINE_FACTS.slice()
+  .sort((a,b)=>a[0].localeCompare(b[0]))
+  .map(f=>[f[0], f[1], f[0] <= TODAY ? "in force" : "upcoming"]);
 const PENALTIES = {
-  unacceptable:"EUR 35,000,000 or 7% of worldwide annual turnover (Art 99)",
-  other:"EUR 15,000,000 or 3% of worldwide annual turnover (Art 99)",
+  unacceptable:"EUR 35,000,000 or 7% of worldwide annual turnover, whichever is higher (Art 99)",
+  other:"EUR 15,000,000 or 3% of worldwide annual turnover, whichever is higher (Art 99)",
 };
 const TIER_INFO = {
   unacceptable:{label:"Unacceptable — Prohibited", blurb:"This use is banned under Article 5. It must not be placed on the market or put into service in the EU."},
@@ -247,7 +261,7 @@ const TIER_INFO = {
 function classify(p){
   const rationale=[];
   const prohibitedHits = PROHIBITED.filter(pr => p.prohibited && p.prohibited[pr.key]);
-  for(const pr of prohibitedHits) rationale.push({tier:"unacceptable", reason:pr.title, article:pr.article});
+  for(const pr of prohibitedHits) rationale.push({tier:"unacceptable", reason:(pr.appliesFrom && pr.appliesFrom > TODAY) ? pr.title+" — prohibited from "+pr.appliesFrom : pr.title, article:pr.article});
   let high=false;
   if(p.annexIProduct){ high=true; rationale.push({tier:"high", reason:"Safety component of a product covered by EU harmonisation law (Annex I).", article:"Annex I / Art 6(1)"}); }
   const annexHits = ANNEX_III.filter(d => p.annexIII && p.annexIII[d.key]);

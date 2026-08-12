@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { readFileSync } from "node:fs";
-import { assess, toEvidence } from "../dist/index.js";
+import { assess, toEvidence, timelineAsOf, TRANSPARENCY_TRIGGERS } from "../dist/index.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const ex = (f) => JSON.parse(readFileSync(join(here, "..", "examples", f), "utf8"));
@@ -43,4 +43,81 @@ test("evidence record carries a sha256 digest", () => {
   const e = toEvidence(assess(ex("spam-filter.json")));
   assert.equal(e.integrity.algorithm, "sha256");
   assert.match(e.integrity.digest, /^[a-f0-9]{64}$/);
+});
+
+// --- Timeline currency ---------------------------------------------------
+// The 0.1.0 knowledge base hardcoded `status`, so 2026-08-02 kept reporting as
+// "upcoming" after it passed. Status is now derived; these guard the invariant.
+
+test("no milestone that has already passed reports as upcoming", () => {
+  const today = new Date().toISOString().slice(0, 10);
+  for (const t of assess(ex("spam-filter.json")).timeline) {
+    if (t.date <= today) {
+      assert.notEqual(t.status, "upcoming", `${t.date} (${t.milestone}) passed but reports upcoming`);
+    }
+  }
+});
+
+test("timelineAsOf derives status from the date it is given", () => {
+  // The day before the Digital Omnibus entered into force.
+  const before = timelineAsOf("2026-07-26");
+  const omnibusBefore = before.find((t) => t.date === "2026-07-27");
+  assert.equal(omnibusBefore.status, "upcoming");
+  assert.equal(before.find((t) => t.date === "2026-08-02").status, "upcoming");
+
+  // Today: Omnibus and Art 50 are both live.
+  const now = timelineAsOf("2026-08-12");
+  assert.equal(now.find((t) => t.date === "2026-07-27").status, "in force");
+  assert.equal(now.find((t) => t.date === "2026-08-02").status, "in force");
+});
+
+test("timeline is chronologically sorted so the first upcoming entry is the next one", () => {
+  const dates = timelineAsOf("2026-08-12").map((t) => t.date);
+  assert.deepEqual(dates, [...dates].sort(), "timeline must be date-sorted");
+});
+
+test("Digital Omnibus deferrals are encoded as binding, not proposed", () => {
+  const tl = timelineAsOf("2026-08-12");
+  const annexIII = tl.find((t) => t.milestone.includes("Annex III"));
+  const annexI = tl.find((t) => t.milestone.includes("Annex I)"));
+  assert.equal(annexIII.date, "2027-12-02");
+  assert.equal(annexI.date, "2028-08-02");
+  for (const t of tl) assert.notEqual(t.status, "proposed change", "the Omnibus is in force, not proposed");
+});
+
+// --- Article 50 ----------------------------------------------------------
+
+test("Art 50(2) records the 2 Dec 2026 marking grace period for legacy systems", () => {
+  const synthetic = TRANSPARENCY_TRIGGERS.find((t) => t.key === "syntheticContent");
+  assert.match(synthetic.note, /2 Dec 2026/);
+  assert.equal(synthetic.responsible, "provider");
+});
+
+test("Art 50 duties bind providers and deployers only", () => {
+  for (const t of TRANSPARENCY_TRIGGERS) {
+    assert.ok(["provider", "deployer", "both"].includes(t.responsible), `${t.key} has role ${t.responsible}`);
+  }
+});
+
+// --- New Art 5 prohibition -----------------------------------------------
+
+test("NCII/CSAM => UNACCEPTABLE, flagged as not yet applying", () => {
+  const a = assess({
+    name: "Image generator",
+    role: "provider",
+    prohibited: { nonConsensualIntimateImagery: true },
+  });
+  assert.equal(a.tier, "unacceptable");
+  // Applies from 2026-12-02, so today it must not be asserted as already live.
+  assert.ok(
+    a.rationale.some((r) => /prohibited from 2026-12-02/.test(r.reason)),
+    "expects the pending prohibition to state its start date",
+  );
+});
+
+test("high-risk assessment surfaces its own deadline, not just the next global one", () => {
+  const a = assess(ex("hiring-screener.json"));
+  const hr = a.timeline.filter((t) => t.track === "high" && t.status === "upcoming");
+  assert.ok(hr.length > 0, "high-risk milestones must be tagged and upcoming");
+  assert.ok(hr.some((t) => t.date === "2027-12-02"));
 });

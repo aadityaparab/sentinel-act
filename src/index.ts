@@ -22,4 +22,6 @@ export {
   TRANSPARENCY_TRIGGERS,
   TIMELINE,
   PENALTIES,
+  AS_OF,
+  timelineAsOf,
 } from "./knowledge/index.js";

@@ -10,7 +10,8 @@ export type ProhibitedKey =
   | "facialScraping"
   | "emotionRecognitionWorkEducation"
   | "biometricCategorizationSensitive"
-  | "realtimeRemoteBiometricIdPublic";
+  | "realtimeRemoteBiometricIdPublic"
+  | "nonConsensualIntimateImagery";
 
 export type AnnexIIIKey =
   | "biometrics"
@@ -88,6 +89,8 @@ export interface TimelineEntry {
   date: string;
   status: "in force" | "upcoming" | "proposed change";
   note?: string;
+  /** Marks milestones that gate the high-risk regime specifically. */
+  track?: "high";
 }
 
 export interface Assessment {

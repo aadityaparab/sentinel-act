@@ -5,6 +5,11 @@ export interface ProhibitedPractice {
   title: string;
   article: string;
   summary: string;
+  /**
+   * Date the prohibition starts to apply, when it is not one of the original
+   * Art 5 bans that took effect on 2 Feb 2025. Absent means already in force.
+   */
+  appliesFrom?: string;
 }
 
 /** Article 5 — prohibited AI practices. Any of these ⇒ Unacceptable risk (banned). */
@@ -56,5 +61,16 @@ export const PROHIBITED_PRACTICES: ProhibitedPractice[] = [
     title: "Real-time remote biometric identification in public (law enforcement)",
     article: "Art 5(1)(h)",
     summary: "Real-time remote biometric identification in publicly accessible spaces for law-enforcement purposes, save narrowly defined exceptions.",
+  },
+  {
+    key: "nonConsensualIntimateImagery",
+    title: "AI-generated non-consensual intimate imagery or CSAM",
+    // The Digital Omnibus inserts this into Art 5; the sub-paragraph letter is
+    // not cited here because the numbering in the published text is not yet
+    // settled across sources. Verify against the Official Journal before relying on it.
+    article: "Art 5 (as amended by the Digital Omnibus)",
+    summary:
+      "Placing on the market, putting into service, or using AI systems that generate or manipulate realistic intimate imagery of an identifiable person without their free and explicit consent, or that generate child sexual abuse material. For providers this reaches systems where such output is a reasonably foreseeable and reproducible outcome absent adequate technical safeguards.",
+    appliesFrom: "2026-12-02",
   },
 ];

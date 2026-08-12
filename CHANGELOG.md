@@ -2,6 +2,29 @@
 
 All notable changes are documented here. Format based on Keep a Changelog; versioning follows SemVer.
 
+## [0.2.0] - 2026-08-12
+
+Legal-currency release. The knowledge base was dated 2026-07-16, which predated
+the Digital Omnibus on AI entering into force on 27 July 2026. Every date below
+is re-verified against primary sources.
+
+### Fixed
+- **The timeline reported milestones that had already passed as "upcoming."** Status is now derived from the current date instead of being stored as a literal, so a deadline cannot silently go stale again. `AS_OF` is retained, but now means "when the law was last verified" rather than doubling as the clock.
+- **High-risk deadlines were wrong in both directions.** Annex III moves 2 Aug 2026 → **2 Dec 2027**, and Annex I products 2 Aug 2027 → **2 Aug 2028**, per the Digital Omnibus. The Omnibus deferral is no longer labelled "proposed"; it is in force.
+- **The 2026-08-02 milestone bundled two things that have since diverged.** It now covers Art 50 transparency and the remaining general provisions only; the high-risk regimes are separate, later entries.
+- A high-risk assessment no longer presents the globally-next milestone as if it were its own deadline. `key date` is now `next milestone`, with the Annex III/Annex I dates surfaced separately for high-risk systems.
+
+### Added
+- New Art 5 prohibition on AI-generated non-consensual intimate imagery and CSAM, applying from **2 Dec 2026**. Prohibitions carry an optional `appliesFrom`, so a ban that has not yet started is reported as "prohibited from <date>" rather than asserted as live. Cited as "Art 5 (as amended by the Digital Omnibus)" — the sub-paragraph numbering in the published text is not yet settled.
+- The Art 50(2) transitional period: generative AI systems already on the market before 2 Aug 2026 have until **2 Dec 2026** to meet the machine-readable marking duty, with the limits of that carve-out recorded alongside it.
+- Timeline entry for the Digital Omnibus entering into force (27 Jul 2026).
+- Penalties now state "whichever is higher", note the Art 99(6) inversion for SMEs and start-ups, and include the separate €750,000 tier for EU institutions and bodies (Art 100).
+- `timelineAsOf(date)` and `AS_OF` are exported for deterministic, point-in-time queries.
+
+### Changed
+- Knowledge base version → `0.2.0`, `AS_OF` → 2026-08-12.
+- The hosted web classifier mirrors all of the above, including date-derived status.
+
 ## [0.1.0] - 2026-07-16
 
 ### Added

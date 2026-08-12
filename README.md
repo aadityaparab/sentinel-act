@@ -15,7 +15,7 @@ npx sentinel-act assess my-system.json
 ```
 
 ```
-sentinel-act  0.1.0 — EU AI Act, Regulation (EU) 2024/1689 (as of 2026-07-16)
+sentinel-act  0.2.0 — EU AI Act, Reg. (EU) 2024/1689 as amended by the Digital Omnibus (as of 2026-08-12)
 system: AI Hiring Screener  ·  role: provider
 
 risk tier:   HIGH RISK
@@ -30,8 +30,9 @@ obligations that apply (14):
   [Art 47] EU declaration of conformity
   [Art 49] Registration in the EU database
   ... 
-key date:  2026-08-02 — High-risk (Annex III) & most remaining provisions apply
-max penalty:  €15,000,000 or 3% of worldwide annual turnover (Art 99)
+next milestone:  2026-12-02 — Art 50(2) marking deadline for pre-existing generative AI
+your high-risk deadline:  2027-12-02 — High-risk (Annex III) obligations apply
+max penalty:  €15,000,000 or 3% of worldwide annual turnover, whichever is higher (Art 99)
 ```
 
 ---
@@ -40,9 +41,9 @@ max penalty:  €15,000,000 or 3% of worldwide annual turnover (Art 99)
 
 | Tier | Meaning | What Sentinel Act gives you |
 | --- | --- | --- |
-| **Unacceptable** | Prohibited practices (Art 5) — social scoring, manipulative techniques, untargeted facial scraping, etc. | A clear "must not ship" verdict with the Article 5 citation. |
+| **Unacceptable** | Prohibited practices (Art 5) — social scoring, manipulative techniques, untargeted facial scraping, and (from 2 Dec 2026) AI-generated NCII and CSAM. | A clear "must not ship" verdict with the Article 5 citation. |
 | **High** | Annex III domains (employment, credit, biometrics…) or Annex I product safety components. | The full obligation set (Art 9–15, 26–27, 43–49, 72–73) + a checklist + starter docs. |
-| **Limited** | Transparency triggers (Art 50) — chatbots, deepfakes, synthetic content. | The applicable Art 50 disclosures + a ready-to-adapt transparency notice. |
+| **Limited** | Transparency triggers (Art 50) — chatbots, deepfakes, synthetic content. **In force since 2 Aug 2026.** | The applicable Art 50 disclosures + a ready-to-adapt transparency notice. |
 | **Minimal** | Everything else. | Confirmation and voluntary-code pointers. |
 
 General-purpose AI (GPAI) models carry their own obligations (Art 53, and Art 55 for systemic risk) that **co-apply on top of** the tier.
@@ -104,7 +105,21 @@ Precedence: **Unacceptable → High → Limited → Minimal**. An Annex III syst
 
 ## Accuracy & sources
 
-Built from Regulation (EU) 2024/1689 and its Annexes. Primary references: the [EU Artificial Intelligence Act text](https://artificialintelligenceact.eu/the-act/) and [EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/1689/oj). **Timeline note:** high-risk (Annex III) obligations apply **2 Aug 2026** under the Regulation; the *Digital Omnibus* (provisional political agreement, 7 May 2026, pending formal adoption) proposes deferring them to **2 Dec 2027**. Both are encoded, dated, and flagged. The knowledge base carries an `AS_OF` date — re-check before relying on it.
+Built from Regulation (EU) 2024/1689 and its Annexes, **as amended by the Digital Omnibus on AI** (published in the OJ 24 Jul 2026, in force **27 Jul 2026**). Primary references: the [EU Artificial Intelligence Act text](https://artificialintelligenceact.eu/the-act/) and [EUR-Lex](https://eur-lex.europa.eu/eli/reg/2024/1689/oj).
+
+**What the Omnibus changed:**
+
+| | Original | Now |
+| --- | --- | --- |
+| High-risk, Annex III | 2 Aug 2026 | **2 Dec 2027** |
+| High-risk, Annex I products | 2 Aug 2027 | **2 Aug 2028** |
+| Art 50 transparency | 2 Aug 2026 | **unchanged — in force** |
+| Art 4 AI literacy | 2 Feb 2025 | unchanged |
+| Art 5 prohibitions | 2 Feb 2025 | + NCII/CSAM ban from **2 Dec 2026** |
+
+**Article 50 in practice.** Its duties bind **providers and deployers** — importers and distributors are within the Act's scope (Art 2) but are not Art 50 duty-bearers. One narrow transitional carve-out applies: generative AI systems already on the market before 2 Aug 2026 have until **2 Dec 2026** to meet the Art 50(2) machine-readable marking duty. It does not extend to systems placed on the market on or after 2 Aug 2026, nor to the Art 50(4) deployer duties (deepfake labelling, public-interest text), which applied from 2 Aug 2026.
+
+**Staying current.** Milestone status is derived from the current date rather than stored, so a deadline cannot keep reporting as "upcoming" after it passes. The knowledge base separately carries an `AS_OF` date recording when the *law itself* was last verified — re-check that before relying on it. The new Art 5 prohibition is cited as "Art 5 (as amended by the Digital Omnibus)" rather than a specific sub-paragraph, because the numbering in the published text is not yet settled across sources.
 
 ## Roadmap
 

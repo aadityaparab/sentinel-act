@@ -14,7 +14,7 @@ export function assess(p: SystemProfile): Assessment {
     id: `TR-${t.key}`,
     title: t.title,
     article: t.article,
-    summary: t.duty,
+    summary: t.note ? `${t.duty} ${t.note}` : t.duty,
     appliesTo: t.responsible,
     tier: "limited",
   }));

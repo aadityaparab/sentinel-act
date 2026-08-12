@@ -2,6 +2,7 @@ import type { SystemProfile, RiskTier, Rationale } from "./types.js";
 import { PROHIBITED_PRACTICES } from "./knowledge/prohibited.js";
 import { ANNEX_III_DOMAINS } from "./knowledge/high-risk.js";
 import { TRANSPARENCY_TRIGGERS } from "./knowledge/transparency.js";
+import { todayIso } from "./knowledge/timeline.js";
 
 export interface Classification {
   tier: RiskTier;
@@ -19,9 +20,17 @@ export function classify(p: SystemProfile): Classification {
   const rationale: Rationale[] = [];
 
   // 1. Unacceptable risk (Article 5)
+  const today = todayIso();
   const prohibitedHits = PROHIBITED_PRACTICES.filter((pr) => p.prohibited?.[pr.key]);
   for (const pr of prohibitedHits) {
-    rationale.push({ tier: "unacceptable", reason: pr.title, citation: { article: pr.article, label: pr.title } });
+    // A ban added after the original Art 5 set may not have started to apply yet.
+    // Say so rather than assert a prohibition that is not live.
+    const pending = pr.appliesFrom !== undefined && pr.appliesFrom > today;
+    rationale.push({
+      tier: "unacceptable",
+      reason: pending ? `${pr.title} — prohibited from ${pr.appliesFrom}` : pr.title,
+      citation: { article: pr.article, label: pr.title },
+    });
   }
 
   // 2. High risk (Annex I products, or Annex III domains subject to the Art 6(3) exemption)
